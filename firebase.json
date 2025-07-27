@@ -1,0 +1,21 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "mission-island-app",
+                    "appId": "1:127054615457:android:2c8705eb2271390505f1e0",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "mission-island-app",
+                    "configurations": {
+                        "android": "1:127054615457:android:2c8705eb2271390505f1e0"
+                    }
+                }
+            }
+        }
+    }
+}
