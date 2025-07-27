@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:missionland_app/feature/posts/presentation/bloc/post_bloc.dart';
 import 'package:missionland_app/feature/posts/presentation/pages/add_post_page.dart';
-import 'package:missionland_app/temp/island_page.dart';
-import 'package:missionland_app/temp/main_home_page.dart';
+import 'package:missionland_app/feature/island_features/presentation/pages/island_page.dart';
+import 'package:missionland_app/app/main_home_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

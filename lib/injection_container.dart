@@ -59,19 +59,19 @@ Future<void> initializeDependencies() async {
   sl.registerLazySingleton<PostRemoteDataSource>(
     () => PostRemoteDataSourceImpl(firestore: sl(), imageUploadService: sl()),
   );
-  sl.registerLazySingleton<PostRepository>(
+  sl.registerFactory<PostRepository>(
     () => PostRepositoryImpl(remoteDataSource: sl()),
   );
   sl.registerLazySingleton<AddPostUseCase>(
     () => AddPostUseCase(repository: sl()),
   );
-  sl.registerLazySingleton<GetPostsUseCase>(
+  sl.registerFactory<GetPostsUseCase>(
     () => GetPostsUseCase(repository: sl()),
   );
-  sl.registerLazySingleton<ToggleLikeUseCase>(
+  sl.registerFactory<ToggleLikeUseCase>(
     () => ToggleLikeUseCase(repository: sl()),
   );
-  sl.registerLazySingleton<ToggleThumbsUpUseCase>(
+  sl.registerFactory<ToggleThumbsUpUseCase>(
     () => ToggleThumbsUpUseCase(repository: sl()),
   );
   sl.registerFactory<PostBloc>(

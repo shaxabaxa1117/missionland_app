@@ -20,7 +20,9 @@ class _AddPostPageState extends State<AddPostPage> {
   File? _imageFile;
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
 
     if (pickedFile != null) {
       setState(() {
@@ -39,18 +41,24 @@ class _AddPostPageState extends State<AddPostPage> {
           description: _descriptionController.text,
           createdAt: DateTime.now(),
           userId: user.uid,
-           userEmail: user.email ?? 'unknown', likedBy: [], thumbsUpBy: [],
+          userEmail: user.email ?? 'unknown',
+          likedBy: [],
+          thumbsUpBy: [],
         );
-          _clearInputs();
+        _clearInputs();
         context.read<PostBloc>().add(AddPostEvent(post));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Пожалуйста, войдите в систему для публикации')),
+          const SnackBar(
+            content: Text('Пожалуйста, войдите в систему для публикации'),
+          ),
         );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Пожалуйста, выберите изображение и введите описание')),
+        const SnackBar(
+          content: Text('Пожалуйста, выберите изображение и введите описание'),
+        ),
       );
     }
   }
@@ -72,12 +80,13 @@ class _AddPostPageState extends State<AddPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add post'),
-        backgroundColor: Colors.green.shade700,
+        automaticallyImplyLeading: false,
+        title: Center(child: const Text('Add post')),
+        backgroundColor: Colors.green,
       ),
       body: BlocListener<PostBloc, PostState>(
         listener: (context, state) {
- if (state is PostError) {
+          if (state is PostError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Ошибка: ${state.message}'),
@@ -92,31 +101,32 @@ class _AddPostPageState extends State<AddPostPage> {
             children: [
               GestureDetector(
                 onTap: _pickImage,
-                child: _imageFile == null
-                    ? Container(
-                        width: double.infinity,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.green.shade300),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Choose an image',
-                            style: TextStyle(color: Colors.green),
-                          ),
-                        ),
-                      )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.file(
-                          _imageFile!,
+                child:
+                    _imageFile == null
+                        ? Container(
                           width: double.infinity,
                           height: 200,
-                          fit: BoxFit.cover,
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade50,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.green.shade300),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Choose an image',
+                              style: TextStyle(color: Colors.green),
+                            ),
+                          ),
+                        )
+                        : ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.file(
+                            _imageFile!,
+                            width: double.infinity,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
               ),
               const SizedBox(height: 20),
               TextField(

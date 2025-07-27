@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:missionland_app/app/drawer/custom_drawer.dart';
 import 'package:missionland_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:missionland_app/feature/posts/presentation/bloc/post_bloc.dart';
 import 'package:missionland_app/feature/posts/presentation/bloc/post_event.dart';
@@ -28,12 +29,7 @@ class MainHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ElevatedButton(onPressed: (){
-          context.read<AuthBloc>().add(AuthSignOutEvent());
-          Navigator.pushReplacementNamed(context, '/sign_in');
-        }, child: Text('Sign Out')),
-      ),
+      drawer: AppDrawer(),
       appBar: AppBar(
         title: const Text('Main Home Page'),
         centerTitle: true,

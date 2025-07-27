@@ -7,11 +7,13 @@ import 'package:missionland_app/feature/auth/presentation/pages/auth_wrap.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_in_page.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_up_page.dart';
 import 'package:missionland_app/core/consts/firebase_options.dart';
+
 import 'package:missionland_app/feature/posts/presentation/bloc/post_bloc.dart';
 import 'package:missionland_app/feature/posts/presentation/bloc/post_event.dart';
 
 import 'package:missionland_app/injection_container.dart' as di;
-import 'package:missionland_app/temp/home_page.dart';
+import 'package:missionland_app/app/home_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +48,7 @@ class EcoApp extends StatelessWidget {
             border: OutlineInputBorder(),
           ),
         ),
-
+      
         routes: {
           '/home': (_) => const HomePage(),
           '/sign_in': (_) => const SignInPage(),

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:missionland_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_in_page.dart';
-import 'package:missionland_app/temp/home_page.dart';
+import 'package:missionland_app/app/home_page.dart';
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
