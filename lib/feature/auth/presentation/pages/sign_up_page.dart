@@ -34,14 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
           );
         }if (state is Authenticated) {
           Navigator.pushReplacementNamed(context, '/home');
-        } else if (state is EmailNotVerified) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Please verify your email before signing in.'),
-              backgroundColor: Colors.orange,
-            ),
-          );
-        }
+        } 
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,

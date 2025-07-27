@@ -7,14 +7,17 @@ import 'package:missionland_app/feature/auth/presentation/pages/auth_wrap.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_in_page.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_up_page.dart';
 import 'package:missionland_app/core/consts/firebase_options.dart';
-import 'package:missionland_app/injection_container.dart' as di; 
+import 'package:missionland_app/feature/posts/presentation/bloc/post_bloc.dart';
+import 'package:missionland_app/feature/posts/presentation/bloc/post_event.dart';
+
+import 'package:missionland_app/injection_container.dart' as di;
 import 'package:missionland_app/temp/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  await di.initializeDependecies();
+  await di.initializeDependencies();
   runApp(const EcoApp());
 }
 
@@ -24,10 +27,13 @@ class EcoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      
       providers: [
         BlocProvider(
           create: (context) => di.sl.get<AuthBloc>()..add(AuthCheckEvent()),
+        ),
+        BlocProvider(
+          create: (context) => di.sl<PostBloc>()..add(LoadPostsEvent()),
+     
         ),
       ],
       child: MaterialApp(
@@ -40,13 +46,13 @@ class EcoApp extends StatelessWidget {
             border: OutlineInputBorder(),
           ),
         ),
-      
+
         routes: {
           '/home': (_) => const HomePage(),
           '/sign_in': (_) => const SignInPage(),
-          '/si_up': (_) => const SignUpPage(),
+          '/sign_up': (_) => const SignUpPage(),
         },
-        home: const AuthWrapper()
+        home: const AuthWrapper(),
       ),
     );
   }

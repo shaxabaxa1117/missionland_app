@@ -39,6 +39,3 @@ final class ResetPasswordSuccess extends AuthState {
 }
 
 
-final class EmailVerificationSent extends AuthState {}
-
-final class EmailNotVerified extends AuthState {}

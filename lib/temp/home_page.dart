@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:missionland_app/feature/posts/presentation/bloc/post_bloc.dart';
+import 'package:missionland_app/feature/posts/presentation/pages/add_post_page.dart';
 import 'package:missionland_app/temp/island_page.dart';
 import 'package:missionland_app/temp/main_home_page.dart';
 
@@ -17,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const MainHomePage(),
     const IslandPage(),
-    const Center(child: Text('Add post', style: TextStyle(fontSize: 24))),
+    const AddPostPage(),
     const Center(child: Text('Profile Screen', style: TextStyle(fontSize: 24))),
     const Center(child: Text('Time', style: TextStyle(fontSize: 24))),
   ];
@@ -31,6 +33,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+
       body: _pages[_selectedIndex], // Отображаем выбранную страницу
       bottomNavigationBar: ConvexAppBar(
         style:
