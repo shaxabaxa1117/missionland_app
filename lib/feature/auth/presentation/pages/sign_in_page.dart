@@ -59,7 +59,7 @@ class _SignInPageState extends State<SignInPage> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: Colors.green,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -78,13 +78,13 @@ class _SignInPageState extends State<SignInPage> {
                     controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      prefixIcon: const Icon(Icons.email, color: Colors.blue),
+                      prefixIcon: const Icon(Icons.email, color: Colors.green),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.blue, width: 2),
+                        borderSide: const BorderSide(color: Colors.green, width: 2),
                       ),
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -101,13 +101,13 @@ class _SignInPageState extends State<SignInPage> {
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      prefixIcon: const Icon(Icons.lock, color: Colors.blue),
+                      prefixIcon: const Icon(Icons.lock, color: Colors.green),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(color: Colors.blue, width: 2),
+                        borderSide: const BorderSide(color: Colors.green, width: 2),
                       ),
                     ),
                     obscureText: true,
@@ -126,7 +126,7 @@ class _SignInPageState extends State<SignInPage> {
                   ElevatedButton(
                     onPressed: _onSignInPressed,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Colors.green,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -142,7 +142,7 @@ class _SignInPageState extends State<SignInPage> {
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoading) {
-                        return const Center(child: CircularProgressIndicator(color: Colors.blue));
+                        return const Center(child: CircularProgressIndicator(color: Colors.green));
                       }
                       return const SizedBox.shrink();
                     },
@@ -188,7 +188,7 @@ class _SignInPageState extends State<SignInPage> {
                       );
                     },
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.blue),
+                      side: const BorderSide(color: Colors.green),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -196,7 +196,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     child: const Text(
                       'Create New Account',
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: Colors.green),
                     ),
                   ),
                 ],

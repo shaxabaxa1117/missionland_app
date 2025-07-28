@@ -10,9 +10,11 @@ import 'package:missionland_app/core/consts/firebase_options.dart';
 
 import 'package:missionland_app/feature/posts/presentation/bloc/post_bloc.dart';
 import 'package:missionland_app/feature/posts/presentation/bloc/post_event.dart';
+import 'package:missionland_app/feature/videos/presentation/controller/video_provider.dart';
 
 import 'package:missionland_app/injection_container.dart' as di;
 import 'package:missionland_app/app/home_page.dart';
+import 'package:provider/provider.dart';
 
 
 void main() async {
@@ -20,7 +22,10 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await di.initializeDependencies();
-  runApp(const EcoApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => VideoProvider()..loadWatchedVideos(),
+    
+    child: const EcoApp()));
 }
 
 class EcoApp extends StatelessWidget {

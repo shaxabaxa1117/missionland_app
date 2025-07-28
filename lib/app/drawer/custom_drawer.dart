@@ -49,14 +49,14 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.home),
             title: Text('Home'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/home');
+         
             },
           ),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/profile');
+            
             },
           ),
           ListTile(

@@ -41,7 +41,7 @@ class _SignUpPageState extends State<SignUpPage> {
         appBar: AppBar(
           title: const Text('Sign Up'),
           backgroundColor: Colors.white,
-          foregroundColor: Colors.blue,
+          foregroundColor: Colors.green,
           elevation: 0,
         ),
         body: Padding(
@@ -57,7 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Colors.green,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -66,13 +66,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    prefixIcon: const Icon(Icons.email, color: Colors.blue),
+                    prefixIcon: const Icon(Icons.email, color: Colors.green),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.blue, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -91,13 +91,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock, color: Colors.blue),
+                    prefixIcon: const Icon(Icons.lock, color: Colors.green),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.blue, width: 2),
+                      borderSide: const BorderSide(color: Colors.green, width: 2),
                     ),
                   ),
                   obscureText: true,
@@ -125,7 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -141,7 +141,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   builder: (context, state) {
                     if (state is AuthLoading) {
                       return const Center(
-                        child: CircularProgressIndicator(color: Colors.blue),
+                        child: CircularProgressIndicator(color: Colors.green),
                       );
                     }
                     return const SizedBox.shrink();
@@ -161,7 +161,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         TextSpan(
                           text: 'Sign In',
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
