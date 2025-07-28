@@ -5,7 +5,7 @@ class EventProvider extends ChangeNotifier {
   static const String _lastUpdateKey = 'last_text_update';
   static const String _currentTextSetKey = 'current_text_set';
   
-  // Два набора текстов, которые будут меняться между собой
+  //! Два набора текстов, которые будут меняться между собой
   final List<List<String>> _textSets = [
     [
       'Beware, tornado is coming!',
@@ -36,17 +36,16 @@ class EventProvider extends ChangeNotifier {
 
   Future<void> _initializeTexts() async {
     final prefs = await SharedPreferences.getInstance();
-    
-    // Получаем дату последнего обновления
+
     final String? lastUpdateString = prefs.getString(_lastUpdateKey);
     if (lastUpdateString != null) {
       _lastUpdateDate = DateTime.parse(lastUpdateString);
     }
 
-    // Получаем текущий набор текстов
+
     final int currentSetIndex = prefs.getInt(_currentTextSetKey) ?? 0;
     
-    // Проверяем, нужно ли обновить тексты
+
     if (_shouldUpdateTexts()) {
       await _updateTexts();
     } else {
@@ -68,27 +67,27 @@ class EventProvider extends ChangeNotifier {
   Future<void> _updateTexts() async {
     final prefs = await SharedPreferences.getInstance();
     
-    // Получаем текущий индекс набора
+
     final int currentSetIndex = prefs.getInt(_currentTextSetKey) ?? 0;
     
-    // Переключаемся на другой набор текстов
+
     final int newSetIndex = currentSetIndex == 0 ? 1 : 0;
     _currentTexts = List.from(_textSets[newSetIndex]);
     
-    // Сохраняем новый индекс и дату обновления
+
     await prefs.setInt(_currentTextSetKey, newSetIndex);
     await prefs.setString(_lastUpdateKey, DateTime.now().toIso8601String());
     
     _lastUpdateDate = DateTime.now();
   }
 
-  // Метод для принудительного обновления (для тестирования)
+
   Future<void> forceUpdateTexts() async {
     await _updateTexts();
     notifyListeners();
   }
 
-  // Метод для получения времени до следующего обновления
+
   Duration? getTimeUntilNextUpdate() {
     if (_lastUpdateDate == null) return null;
     
@@ -102,7 +101,7 @@ class EventProvider extends ChangeNotifier {
     return Duration.zero;
   }
 
-  // Метод для получения строкового представления времени до обновления
+  
   String getTimeUntilNextUpdateString() {
     final duration = getTimeUntilNextUpdate();
     if (duration == null) return 'Неизвестно';

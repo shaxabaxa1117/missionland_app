@@ -82,7 +82,7 @@ class _AddPostPageState extends State<AddPostPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Center(child: const Text('Add post')),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white,
       ),
       body: BlocListener<PostBloc, PostState>(
         listener: (context, state) {

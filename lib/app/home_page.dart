@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:missionland_app/feature/posts/presentation/bloc/post_bloc.dart';
 import 'package:missionland_app/feature/posts/presentation/pages/add_post_page.dart';
 import 'package:missionland_app/feature/island_features/presentation/pages/island_page.dart';
-import 'package:missionland_app/app/main_home_page.dart';
+import 'package:missionland_app/feature/posts/presentation/pages/main_home_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     const MainHomePage(),
     const IslandPage(),
     const AddPostPage(),
-    const Center(child: Text('Profile Screen', style: TextStyle(fontSize: 24))),
+    const Center(child: Text('Profile Screen', style: TextStyle(fontSize: 24))), //! for further development
     const Center(child: Text('Time', style: TextStyle(fontSize: 24))),
   ];
 

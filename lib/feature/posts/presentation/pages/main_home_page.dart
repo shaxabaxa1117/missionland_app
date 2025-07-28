@@ -33,7 +33,7 @@ class MainHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Main Home Page'),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [

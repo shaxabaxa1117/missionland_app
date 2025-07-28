@@ -68,7 +68,7 @@ class _IslandPageState extends State<IslandPage> {
         automaticallyImplyLeading: false,
         title: Text('Your Eco Island'),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.white,
       ),
       body: Stack(
         children: [

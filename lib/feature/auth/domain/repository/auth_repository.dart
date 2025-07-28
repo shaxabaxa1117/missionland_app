@@ -4,5 +4,4 @@ abstract class AuthRepository {
   Future<void> signOut();
   Future<bool> isSignedIn();
 
-
 }
