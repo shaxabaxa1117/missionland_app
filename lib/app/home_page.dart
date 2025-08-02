@@ -3,6 +3,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:missionland_app/feature/posts/presentation/pages/add_post_page.dart';
 import 'package:missionland_app/feature/island_features/presentation/pages/island_page.dart';
 import 'package:missionland_app/feature/posts/presentation/pages/main_home_page.dart';
+import 'package:missionland_app/feature/screen_time/screen_time_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,8 +20,8 @@ class _HomePageState extends State<HomePage> {
     const MainHomePage(),
     const IslandPage(),
     const AddPostPage(),
-    const Center(child: Text('Profile Screen', style: TextStyle(fontSize: 24))), //! for further development
-    const Center(child: Text('Time', style: TextStyle(fontSize: 24))),
+    ScreenTimeScreen(), //! for further development
+    const Center(child: Text('Profile screen', style: TextStyle(fontSize: 24))),
   ];
 
   void _onItemTapped(int index) {
@@ -55,13 +56,12 @@ class _HomePageState extends State<HomePage> {
             title: 'Add',
           ),
           TabItem(
+            icon: Icon(Icons.screen_lock_landscape, size: 24, color: Colors.black54),
+            title: 'Screen Time',
+          ),
+          TabItem(
             icon: Icon(Icons.person, size: 24, color: Colors.black54),
             title: 'Profile',
-          ),
-
-          TabItem(
-            icon: Icon(Icons.access_time, size: 24, color: Colors.black54),
-            title: 'Home',
           ),
         ],
         initialActiveIndex: _selectedIndex,
