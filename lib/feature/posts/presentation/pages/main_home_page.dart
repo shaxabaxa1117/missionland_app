@@ -39,7 +39,7 @@ class MainHomePage extends StatelessWidget {
         children: [
           Container(
             color: const Color.fromARGB(255, 96, 167, 224),
-            height: 60.0,
+            height: 100.0,
             child: Consumer<VideoProvider>(
               builder: (context, videoProvider, child) {
                 return ListView.builder(
@@ -50,7 +50,7 @@ class MainHomePage extends StatelessWidget {
                     final isWatched = videoProvider.isVideoWatched(videoIndex);
                     
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 35.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -67,8 +67,8 @@ class MainHomePage extends StatelessWidget {
                         child: Stack(
                           children: [
                             Container(
-                              width: 60.0,
-                              height: 60.0,
+                              width: 100.0,
+                              height: 100.0,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6.0),
                                 image: DecorationImage(

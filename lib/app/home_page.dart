@@ -3,6 +3,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:missionland_app/feature/posts/presentation/pages/add_post_page.dart';
 import 'package:missionland_app/feature/island_features/presentation/pages/island_page.dart';
 import 'package:missionland_app/feature/posts/presentation/pages/main_home_page.dart';
+import 'package:missionland_app/feature/profile/profile_screen.dart';
 import 'package:missionland_app/feature/screen_time/screen_time_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     const IslandPage(),
     const AddPostPage(),
     ScreenTimeScreen(), //! for further development
-    const Center(child: Text('Profile screen', style: TextStyle(fontSize: 24))),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
