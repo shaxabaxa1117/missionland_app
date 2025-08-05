@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:missionland_app/feature/auth/presentation/pages/auth_wrap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:missionland_app/feature/auth/presentation/bloc/auth_bloc.dart';
-import 'package:missionland_app/feature/auth/presentation/pages/auth_wrap.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_in_page.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_up_page.dart';
 import 'package:missionland_app/core/consts/firebase_options.dart';
@@ -79,23 +79,27 @@ class AppInitializer extends StatefulWidget {
 
 class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObserver {
   bool _isRestrictionScreenShowing = false;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _checkRestrictionStatus();
+    print('init');
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    print('dispose');
   }
 
   // 포그라운드 검사
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
     if (state == AppLifecycleState.resumed) {
       _checkRestrictionStatus();
     }

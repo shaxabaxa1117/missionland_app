@@ -18,7 +18,7 @@ class RestrictionService {
 
   static Future<void> initialize() async {
     try {
-      if (await FlutterAccessibilityService.isAccessibilityPermissionEnabled()) {
+      if (!await FlutterAccessibilityService.isAccessibilityPermissionEnabled()) {
         final hasPermission = await FlutterAccessibilityService.requestAccessibilityPermission();
         if (!hasPermission) {
           print('Accessibility permission denied');
@@ -38,7 +38,7 @@ class RestrictionService {
       _startListening();
 
       _isRunning = true;
-      print('Simple Restriction Service started');
+      print('Restriction Service started');
     } catch (e) {
       print('Error initializing service: $e');
     }

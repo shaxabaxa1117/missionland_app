@@ -57,8 +57,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 20),
               _buildAchievementsSection(),
-              const SizedBox(height: 20),
-              _buildHistorySection(),
             ],
           ),
         ),
@@ -179,112 +177,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
         ],
       ),
-    );
-  }
-
-  Widget _buildHistorySection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.1),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Recent Activity',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[800],
-            ),
-          ),
-          const SizedBox(height: 16),
-          _buildHistoryItem(
-            'Daily Goal Achieved',
-            'Stayed under 200g CO₂ limit',
-            '2 hours ago',
-            Icons.task_alt,
-            Colors.green[600]!,
-          ),
-          const SizedBox(height: 12),
-          _buildHistoryItem(
-            'New App Added',
-            'Started tracking Instagram',
-            '1 day ago',
-            Icons.add_circle,
-            Colors.blue[600]!,
-          ),
-          const SizedBox(height: 12),
-          _buildHistoryItem(
-            'Level Up!',
-            'Reached Eco Level 12',
-            '3 days ago',
-            Icons.arrow_upward,
-            Colors.purple[600]!,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHistoryItem(String title, String description, String time, IconData icon, Color color) {
-    return Row(
-      children: [
-        Container(
-          width: 36,
-          height: 36,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 18,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[800],
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                description,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Text(
-          time,
-          style: TextStyle(
-            fontSize: 11,
-            color: Colors.grey[500],
-          ),
-        ),
-      ],
     );
   }
 
