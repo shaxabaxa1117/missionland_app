@@ -360,10 +360,7 @@ class AppLimit extends StatelessWidget {
   Future<List<ia.AppInfo>> _getInstalledApps() async {
     try {
       final apps = await ia.InstalledApps.getInstalledApps(true, true);
-      // 시스템 앱 제외하고 사용자 앱만 반환
       return apps.where((app) => 
-        // !app.packageName.startsWith('com.android') &&
-        // !app.packageName.startsWith('com.google.android') &&
         app.name.isNotEmpty
       ).toList();
     } catch (e) {

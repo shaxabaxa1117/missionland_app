@@ -104,16 +104,16 @@ class EventProvider extends ChangeNotifier {
   
   String getTimeUntilNextUpdateString() {
     final duration = getTimeUntilNextUpdate();
-    if (duration == null) return 'Неизвестно';
+    if (duration == null) return 'Not exists';
     
     if (duration.inDays > 0) {
-      return '${duration.inDays} дн. ${duration.inHours % 24} ч.';
+      return '${duration.inDays} Day(s) ${duration.inHours % 24} hr';
     } else if (duration.inHours > 0) {
-      return '${duration.inHours} ч. ${duration.inMinutes % 60} мин.';
+      return '${duration.inHours} hr: ${duration.inMinutes % 60} min';
     } else if (duration.inMinutes > 0) {
-      return '${duration.inMinutes} мин.';
+      return '${duration.inMinutes} min.';
     } else {
-      return 'Скоро обновится';
+      return 'Update soon';
     }
   }
 }
