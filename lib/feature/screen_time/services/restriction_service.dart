@@ -18,11 +18,12 @@ class RestrictionService {
 
   static Future<void> initialize() async {
     try {
-      // 접근성 권한 요청
-      final hasPermission = await FlutterAccessibilityService.requestAccessibilityPermission();
-      if (!hasPermission) {
-        print('Accessibility permission denied');
-        return;
+      if (await FlutterAccessibilityService.isAccessibilityPermissionEnabled()) {
+        final hasPermission = await FlutterAccessibilityService.requestAccessibilityPermission();
+        if (!hasPermission) {
+          print('Accessibility permission denied');
+          return;
+        }
       }
 
       final flags = await SharedPreferences.getInstance();
