@@ -78,7 +78,6 @@ class AppInitializer extends StatefulWidget {
 }
 
 class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObserver {
-  bool _isRestrictionScreenShowing = false;
   bool isLoading = true;
 
   @override
@@ -102,6 +101,8 @@ class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObse
     print(state);
     if (state == AppLifecycleState.resumed) {
       _checkRestrictionStatus();
+    } else if (state == AppLifecycleState.paused) {
+      RestrictionService.dismissRestriction();
     }
   }
 
@@ -110,15 +111,17 @@ class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObse
     final isRestricted = prefs.getBool('isRestricted') ?? false;
     print(isRestricted);
 
-    if (isRestricted && !_isRestrictionScreenShowing && mounted) {
-      _isRestrictionScreenShowing = true;
+    if (isRestricted && mounted) {
 
       // 플래그 초기화
       await prefs.setBool('isRestricted', false);
 
       final restrictionData = RestrictionService.getRestrictionData();
+      print(restrictionData);
+      print(mounted);
 
       if (restrictionData != null && mounted) {
+        print('debug');
         // 제한 화면 표시
         await Navigator.of(context).push(
           MaterialPageRoute(
@@ -129,8 +132,6 @@ class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObse
             ),
           ),
         );
-        // 제한 화면에서 돌아오면 다시 검사 가능하게 설정
-        _isRestrictionScreenShowing = false;
         return;
       }
     }

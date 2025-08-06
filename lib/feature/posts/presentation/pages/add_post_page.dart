@@ -50,14 +50,14 @@ class _AddPostPageState extends State<AddPostPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Пожалуйста, войдите в систему для публикации'),
+            content: Text('Please log in to publish.'),
           ),
         );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Пожалуйста, выберите изображение и введите описание'),
+          content: Text('Please select an image and enter a description.'),
         ),
       );
     }

@@ -29,23 +29,21 @@ class _RestrictionScreenState extends State<RestrictionScreen>
   final TextEditingController _quoteController = TextEditingController();
   final FocusNode _quoteFocusNode = FocusNode();
   bool _isQuoteValid = false;
-  String _errorMessage = '';
-  bool _showQuoteInput = false;
+  String _targetQuote = "We do not inherit the Earth from our ancestors, we borrow it from our children";
+  String _typedText = "";
 
   // Famous environmental quotes database
   final List<String> _environmentalQuotes = [
+    "We do not inherit the Earth from our ancestors, we borrow it from our children",
     "The Earth does not belong to us; we belong to the Earth",
-    "What we are doing to the forests of the world is but a mirror reflection of what we are doing to ourselves and to one another",
-    "The environment is where we all meet; where we all have a mutual interest; it is the one thing all of us share",
+    "What we are doing to the forests of the world is but a mirror reflection of what we are doing to ourselves",
+    "The environment is where we all meet; where we all have a mutual interest",
     "Climate change is no longer some far-off problem; it is happening here, it is happening now",
     "The greatest threat to our planet is the belief that someone else will save it",
-    "We do not inherit the Earth from our ancestors; we borrow it from our children",
     "The Earth is what we all have in common",
     "Nature is not a place to visit, it is home",
     "There are no passengers on spaceship Earth, we are all crew",
     "The climate crisis has already been solved. We already have the facts and solutions",
-    "We are the first generation to feel the effect of climate change and the last generation who can do something about it",
-    "Act as if what you do makes a difference. It does",
   ];
 
   @override
@@ -71,6 +69,10 @@ class _RestrictionScreenState extends State<RestrictionScreen>
     
     _animationController.forward();
     
+    // Select random quote
+    _environmentalQuotes.shuffle();
+    _targetQuote = _environmentalQuotes.first;
+    
     // Quote input listener
     _quoteController.addListener(_validateQuote);
   }
@@ -86,46 +88,16 @@ class _RestrictionScreenState extends State<RestrictionScreen>
   }
 
   void _validateQuote() {
-    final input = _quoteController.text.trim().toLowerCase();
+    final input = _quoteController.text.trim();
+    _typedText = input;
     
-    if (input.isEmpty) {
-      setState(() {
-        _isQuoteValid = false;
-        _errorMessage = '';
-      });
-      return;
-    }
-
-    // Check if input matches any of the environmental quotes (case insensitive, flexible matching)
-    bool isValid = _environmentalQuotes.any((quote) {
-      final normalizedQuote = quote.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '');
-      final normalizedInput = input.replaceAll(RegExp(r'[^\w\s]'), '');
-      
-      // Allow partial matches (at least 70% of the quote)
-      final words = normalizedQuote.split(' ');
-      final inputWords = normalizedInput.split(' ');
-      
-      if (inputWords.length < words.length * 0.7) return false;
-      
-      int matchingWords = 0;
-      for (String word in inputWords) {
-        if (normalizedQuote.contains(word) && word.length > 2) {
-          matchingWords++;
-        }
-      }
-      
-      return matchingWords >= words.length * 0.7;
-    });
-
+    // Check if input matches the target quote (case insensitive, allow minor variations)
+    final normalizedTarget = _targetQuote.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '');
+    final normalizedInput = input.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '');
+    
     setState(() {
-      _isQuoteValid = isValid;
-      _errorMessage = isValid ? '' : 'Please enter a valid environmental quote';
+      _isQuoteValid = normalizedInput == normalizedTarget;
     });
-  }
-
-  String _getRandomQuote() {
-    _environmentalQuotes.shuffle();
-    return _environmentalQuotes.first;
   }
 
   @override
@@ -133,18 +105,74 @@ class _RestrictionScreenState extends State<RestrictionScreen>
     return WillPopScope(
       onWillPop: () async => false, // 뒤로가기 차단
       child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: SafeArea(
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              child: SingleChildScrollView(
-                child: _buildContent(),
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: ScaleTransition(
+            scale: _scaleAnimation,
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 40),
+                  
+                  // Title
+                  Text(
+                    'Wait!\nAre you tried to\nwatch ${widget.appName}?',
+                    style: const TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black,
+                      height: 1.1,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Subtitle with CO2 info
+                  Text(
+                    'you can reduce ${widget.currentEmission.toStringAsFixed(0)} g CO₂ by not\nwatching ${widget.appName}. Nevertheless, type the\nsentence below to access the app.',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                      height: 1.4,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 60),
+                  
+                  // Quote to type
+                  _buildQuoteDisplay(),
+                  
+                  const Spacer(),
+                  
+                  // Continue button (only visible when quote is completed)
+                  if (_isQuoteValid)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: _closeRestriction,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: const Text(
+                            'Continue to App',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
@@ -153,318 +181,81 @@ class _RestrictionScreenState extends State<RestrictionScreen>
     );
   }
 
-  Widget _buildContent() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+  Widget _buildQuoteDisplay() {
+    return Container(
+      padding: const EdgeInsets.all(20),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 제목
-          const Text(
-            'CARBON LIMIT REACHED',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w800,
-              color: Colors.black,
-              letterSpacing: 2,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          
-          const SizedBox(height: 20),
-          
-          // 앱 이름
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(25),
-              border: Border.all(color: Colors.black.withOpacity(0.3)),
-            ),
-            child: Text(
-              widget.appName,
+          // Display the quote with typed characters highlighted
+          RichText(
+            text: TextSpan(
               style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
+                fontSize: 18,
                 color: Colors.black,
+                height: 1.5,
               ),
-            ),
-          ),
-          
-          const SizedBox(height: 40),
-          
-          // 배출량 정보
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 40),
-            padding: const EdgeInsets.all(25),
-            decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.red.withOpacity(0.5), width: 2),
-            ),
-            child: Column(
-              children: [
-                const Text(
-                  'Today\'s Carbon Emission',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  '${widget.currentEmission.toStringAsFixed(1)}g / ${widget.limit.toStringAsFixed(1)}g',
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                  ),
-                ),
-                const Text(
-                  'CO₂',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black54,
-                  ),
-                ),
-              ],
+              children: _buildQuoteSpans(),
             ),
           ),
           
           const SizedBox(height: 30),
           
-          // 메시지
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40),
-            child: Text(
-              'Take a break and help save the planet! 🌍',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.black,
-                height: 1.5,
+          // Text input field
+          TextField(
+            controller: _quoteController,
+            focusNode: _quoteFocusNode,
+            maxLines: 3,
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: 'Start typing the sentence above...',
+              hintStyle: TextStyle(
+                color: Colors.grey.shade500,
+                fontSize: 16,
               ),
-              textAlign: TextAlign.center,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(color: Colors.grey.shade300),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: _isQuoteValid ? Colors.green : Colors.blue,
+                  width: 2,
+                ),
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade50,
+              contentPadding: const EdgeInsets.all(16),
+            ),
+            style: const TextStyle(
+              fontSize: 16,
+              height: 1.4,
             ),
           ),
           
-          const SizedBox(height: 40),
+          const SizedBox(height: 15),
           
-          // Environmental Quote Challenge Section
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Colors.green.withOpacity(0.3)),
-            ),
-            child: Column(
-              children: [
-                const Icon(
-                  Icons.format_quote,
-                  size: 40,
-                  color: Colors.green,
-                ),
-                const SizedBox(height: 15),
-                const Text(
-                  'Climate Challenge',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'To continue, please type a famous environmental quote to reflect on our planet\'s future',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                    height: 1.4,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                
-                if (!_showQuoteInput) ...[
-                  // Show random quote as hint
-                  Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Example:',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '"${_getRandomQuote()}"',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
-                            fontStyle: FontStyle.italic,
-                            height: 1.3,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _showQuoteInput = true;
-                      });
-                      Future.delayed(const Duration(milliseconds: 100), () {
-                        _quoteFocusNode.requestFocus();
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: const Text(
-                      'Start Challenge',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ] else ...[
-                  // Quote input field
-                  TextField(
-                    controller: _quoteController,
-                    focusNode: _quoteFocusNode,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      hintText: 'Type an environmental quote here...',
-                      hintStyle: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 14,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: _isQuoteValid ? Colors.green : Colors.orange,
-                          width: 2,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.all(15),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  
-                  // Validation message
-                  if (_errorMessage.isNotEmpty)
-                    Text(
-                      _errorMessage,
-                      style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 12,
-                      ),
-                    ),
-                  
-                  if (_isQuoteValid)
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.check_circle, color: Colors.green, size: 16),
-                        SizedBox(width: 5),
-                        Text(
-                          'Great! Valid environmental quote',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  
-                  const SizedBox(height: 15),
-                  
-                  // Hint button
-                  TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Need a hint?'),
-                          content: Text(
-                            'Here\'s another example:\n\n"${_getRandomQuote()}"',
-                            style: const TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Got it!'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Need a hint?',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
+          // Progress indicator
+          LinearProgressIndicator(
+            value: _typedText.length / _targetQuote.length,
+            backgroundColor: Colors.grey.shade200,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              _isQuoteValid ? Colors.green : Colors.blue,
             ),
           ),
           
-          const SizedBox(height: 40),
+          const SizedBox(height: 10),
           
-          // 닫기 버튼 (only enabled when quote is valid or quote input not shown)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: (!_showQuoteInput || _isQuoteValid) ? _closeRestriction : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: (!_showQuoteInput || _isQuoteValid) 
-                      ? Colors.green 
-                      : Colors.grey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: Text(
-                  _showQuoteInput && !_isQuoteValid ? 'Complete the Challenge' : 'Continue',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+          // Status text
+          Text(
+            _isQuoteValid 
+                ? '✓ Quote completed! You can now continue.'
+                : 'Type the environmental quote above to continue...',
+            style: TextStyle(
+              fontSize: 14,
+              color: _isQuoteValid ? Colors.green : Colors.grey.shade600,
+              fontWeight: _isQuoteValid ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
         ],
@@ -472,12 +263,48 @@ class _RestrictionScreenState extends State<RestrictionScreen>
     );
   }
 
+  List<TextSpan> _buildQuoteSpans() {
+    List<TextSpan> spans = [];
+    
+    for (int i = 0; i < _targetQuote.length; i++) {
+      Color textColor;
+      Color? backgroundColor;
+      
+      if (i < _typedText.length) {
+        // Character has been typed
+        if (_typedText[i].toLowerCase() == _targetQuote[i].toLowerCase()) {
+          // Correct character
+          textColor = Colors.black;
+          backgroundColor = Colors.green.withOpacity(0.2);
+        } else {
+          // Incorrect character
+          textColor = Colors.red;
+          backgroundColor = Colors.red.withOpacity(0.1);
+        }
+      } else {
+        // Not yet typed
+        textColor = Colors.grey.shade400;
+      }
+      
+      spans.add(TextSpan(
+        text: _targetQuote[i],
+        style: TextStyle(
+          color: textColor,
+          backgroundColor: backgroundColor,
+          fontWeight: backgroundColor != null ? FontWeight.w500 : FontWeight.normal,
+        ),
+      ));
+    }
+    
+    return spans;
+  }
+
   void _closeRestriction() async {
-    if (_showQuoteInput && !_isQuoteValid) {
+    if (!_isQuoteValid) {
       // Show error if trying to close without valid quote
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please complete the climate challenge first!'),
+          content: Text('Please complete typing the environmental quote first!'),
           backgroundColor: Colors.orange,
         ),
       );
@@ -490,16 +317,14 @@ class _RestrictionScreenState extends State<RestrictionScreen>
     // 시스템 UI 복원
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    // Show completion message if quote was entered
-    if (_isQuoteValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Thank you for reflecting on our planet\'s future! 🌍'),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
+    // Show completion message
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Thank you for reflecting on our planet\'s future! 🌍'),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 2),
+      ),
+    );
 
     // 현재 화면을 모두 종료하고 홈 화면으로 이동
     Navigator.of(context).pushReplacement(

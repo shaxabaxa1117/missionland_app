@@ -294,18 +294,15 @@ static Future<void> removeApp(String packageName) async {
 
         if (type == _EVENT_RESUMED) {
           sessionStart = ts;
-          print('$appId started at $ts');
         } else if ((type == _EVENT_PAUSED || type == _EVENT_STOPPED) && sessionStart != null) {
           final sessionEnd = ts;
-          print('$appId stopped at $ts');
 
           final start = sessionStart.isBefore(dayStart) ? dayStart : sessionStart;
           final end = sessionEnd.isAfter(dayEnd) ? dayEnd : sessionEnd;
 
           if (end.isAfter(start)) {
             final sessionMinutes = end.difference(start).inSeconds / 60.0;
-            print('Session duration: ${sessionMinutes.toStringAsFixed(2)} minutes');
-            
+
             for (var i = 0; i < timeSlotsLabels.length; i++) {
               final slotStart = dayStart.add(Duration(hours: 4 * i));
               final slotEnd   = slotStart.add(const Duration(hours: 4));
@@ -317,7 +314,6 @@ static Future<void> removeApp(String packageName) async {
               if (minutes > 0) {
                 usageBySlot[i] += minutes;
                 totalUsageBySlot[i] += minutes;
-                print('  Slot ${timeSlotsLabels[i]}: +${minutes.toStringAsFixed(2)} min');
               }
             }
             totalUsage += sessionMinutes;
@@ -375,10 +371,6 @@ static Future<void> removeApp(String packageName) async {
       
       await file.writeAsString(jsonString);
       print('Daily usage data saved to: ${file.path}');
-      
-      // debug
-      int appsWithUsage = appsResult.where((app) => app['totalUsage'] > 0).length;
-      print('${appsWithUsage}/${appsResult.length} apps have usage data');
       
     } catch (e) {
       print('Error saving daily usage JSON: $e');
@@ -600,7 +592,6 @@ static Future<void> removeApp(String packageName) async {
     
       String jsonString = await file.readAsString();
       Map<String, dynamic> jsonData = json.decode(jsonString);
-      print(jsonData);
       return jsonData;
     } catch (e) {
       print('Error loading daily usage data: $e');
@@ -615,7 +606,6 @@ static Future<void> removeApp(String packageName) async {
 
       String jsonString = await file.readAsString();
       Map<String, dynamic> jsonData = json.decode(jsonString);
-      print(jsonData);
       return jsonData;
     } catch (e) {
       print('Error loading daily usage data: $e');
