@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/auth_wrap.dart';
+import 'package:missionland_app/feature/screen_time/widgets/app_restriction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:missionland_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_in_page.dart';
@@ -13,7 +14,7 @@ import 'package:missionland_app/feature/videos/presentation/controller/video_pro
 import 'package:missionland_app/injection_container.dart' as di;
 import 'package:missionland_app/app/home_page.dart';
 import 'feature/screen_time/services/restriction_service.dart';
-import 'feature/screen_time/widgets/restrict_app.dart';
+import 'feature/screen_time/widgets/quote_challenge_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -49,7 +50,7 @@ class EcoApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Eco App',
+        title: 'Missionland',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: const Color(0xFF4CAF50),
@@ -117,21 +118,37 @@ class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObse
       await prefs.setBool('isRestricted', false);
 
       final restrictionData = RestrictionService.getRestrictionData();
-      print(restrictionData);
-      print(mounted);
 
       if (restrictionData != null && mounted) {
-        print('debug');
-        // 제한 화면 표시
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => RestrictionScreen(
-              appName: restrictionData['appName'] ?? 'Unknown App',
-              currentEmission: (restrictionData['currentEmission'] ?? 0.0).toDouble(),
-              limit: (restrictionData['limit'] ?? 0.0).toDouble(),
+        final appName = restrictionData['appName'] ?? 'Unknown App';
+        final currentEmission = (restrictionData['currentEmission'] ?? 0.0).toDouble();
+        final dailyLimit = (restrictionData['limit'] ?? 0.0).toDouble();
+
+        if (currentEmission >= dailyLimit) {
+          // Limit exceeded - show hard restriction screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AppRestrictionScreen(
+                appName: appName,
+                currentEmission: currentEmission,
+                limit: dailyLimit,
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          // Limit not exceeded - show quote challenge screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => QuoteChallengeScreen(
+                appName: appName,
+                currentEmission: currentEmission,
+                limit: dailyLimit,
+              ),
+            ),
+          );
+        }
         return;
       }
     }

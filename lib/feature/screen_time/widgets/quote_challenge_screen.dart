@@ -1,15 +1,15 @@
-// restriction_screen.dart
+// quote_challenge_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../services/restriction_service.dart';
 import 'package:missionland_app/app/home_page.dart';
 
-class RestrictionScreen extends StatefulWidget {
+class QuoteChallengeScreen extends StatefulWidget {
   final String appName;
   final double currentEmission;
   final double limit;
 
-  const RestrictionScreen({
+  const QuoteChallengeScreen({
     Key? key,
     required this.appName,
     required this.currentEmission,
@@ -17,10 +17,10 @@ class RestrictionScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<RestrictionScreen> createState() => _RestrictionScreenState();
+  State<QuoteChallengeScreen> createState() => _QuoteChallengeScreenState();
 }
 
-class _RestrictionScreenState extends State<RestrictionScreen> 
+class _QuoteChallengeScreenState extends State<QuoteChallengeScreen> 
     with SingleTickerProviderStateMixin {
   
   late AnimationController _animationController;
@@ -96,7 +96,7 @@ class _RestrictionScreenState extends State<RestrictionScreen>
     final normalizedInput = input.toLowerCase().replaceAll(RegExp(r'[^\w\s]'), '');
     
     setState(() {
-      _isQuoteValid = normalizedInput == normalizedTarget;
+      _isQuoteValid = normalizedTarget == normalizedInput;
     });
   }
 
@@ -118,9 +118,9 @@ class _RestrictionScreenState extends State<RestrictionScreen>
                   
                   // Title
                   Text(
-                    'Wait!\nAre you tried to\nwatch ${widget.appName}?',
+                    'Wait!',
                     style: const TextStyle(
-                      fontSize: 48,
+                      fontSize: 40,
                       fontWeight: FontWeight.w900,
                       color: Colors.black,
                       height: 1.1,
@@ -128,14 +128,42 @@ class _RestrictionScreenState extends State<RestrictionScreen>
                   ),
                   
                   const SizedBox(height: 32),
-                  
-                  // Subtitle with CO2 info
+
                   Text(
-                    'you can reduce ${widget.currentEmission.toStringAsFixed(0)} g CO₂ by not\nwatching ${widget.appName}. Nevertheless, type the\nsentence below to access the app.',
+                    '\nAre you trying to\nwatch ${widget.appName}?',
                     style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                      height: 1.4,
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                      height: 1.1,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                  // Subtitle with CO2 info and current status
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.black87,
+                        height: 1.4,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'You can reduce ${(widget.limit - widget.currentEmission).toStringAsFixed(0)} g of CO₂\nby not using ${widget.appName}.\nCurrent usage: ',
+                        ),
+                        TextSpan(
+                          text: '${widget.currentEmission.toStringAsFixed(1)}g / ${widget.limit.toStringAsFixed(1)}g',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: widget.currentEmission > widget.limit * 0.8 ? Colors.orange : Colors.green,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: '.\n\nTo continue, type the environmental quote below:',
+                        ),
+                      ],
                     ),
                   ),
                   
@@ -154,7 +182,7 @@ class _RestrictionScreenState extends State<RestrictionScreen>
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: _closeRestriction,
+                          onPressed: _allowAccess,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             shape: RoundedRectangleBorder(
@@ -299,9 +327,8 @@ class _RestrictionScreenState extends State<RestrictionScreen>
     return spans;
   }
 
-  void _closeRestriction() async {
+  void _allowAccess() async {
     if (!_isQuoteValid) {
-      // Show error if trying to close without valid quote
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please complete typing the environmental quote first!'),
@@ -311,24 +338,10 @@ class _RestrictionScreenState extends State<RestrictionScreen>
       return;
     }
 
-    // 제한 해제
-    RestrictionService.dismissRestriction();
-
     // 시스템 UI 복원
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    // Show completion message
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Thank you for reflecting on our planet\'s future! 🌍'),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 2),
-      ),
-    );
-
-    // 현재 화면을 모두 종료하고 홈 화면으로 이동
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const HomePage())
-    );
+    // Allow access to the app (you can customize this logic)
+    SystemNavigator.pop();
   }
 }

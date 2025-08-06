@@ -7,7 +7,7 @@ import 'package:flutter_accessibility_service/flutter_accessibility_service.dart
 import 'package:flutter_accessibility_service/accessibility_event.dart';
 import 'package:flutter_accessibility_service/constants.dart';
 import '../data/app_info_data.dart';
-import '../widgets/restrict_app.dart';
+import '../widgets/quote_challenge_screen.dart';
 
 class RestrictionService {
   static const MethodChannel _channel = MethodChannel('app_restriction');
@@ -90,9 +90,8 @@ class RestrictionService {
         if (restrictionData != null) {
           flags.setBool('isRestricted', true);
         }
-      }
-      else if (appInfo != null && appInfo['isOverLimit'] == true) {
-        print('App over limit detected: ${appInfo['displayName']}');
+      } else if (appInfo != null) {
+        print('App over limit: ${appInfo['displayName']}');
         await _triggerRestriction(appInfo);
       }
     } catch (e) {
