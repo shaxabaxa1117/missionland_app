@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:missionland_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:missionland_app/feature/auth/presentation/pages/sign_in_page.dart';
 import 'package:missionland_app/app/home_page.dart';
+import 'package:missionland_app/main.dart';
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
@@ -14,7 +14,7 @@ class AuthWrapper extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          print( 'Authenticated state detected');
+          print('Authenticated state detected');
           Navigator.pushReplacementNamed(context, '/home');
         } else if (state is Unauthenticated) {
           print('Unauthenticated state detected');

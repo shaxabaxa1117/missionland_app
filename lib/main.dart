@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:missionland_app/feature/auth/presentation/pages/auth_wrap.dart';
 import 'package:missionland_app/feature/screen_time/widgets/app_restriction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:missionland_app/feature/auth/presentation/bloc/auth_bloc.dart';
@@ -21,18 +20,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await di.initializeDependencies();
-  
+
   try {
     await RestrictionService.initialize();
     print('Restriction Service initialized successfully');
   } catch (e) {
     print('Error initializing Restriction Service: $e');
   }
-  
-  runApp(ChangeNotifierProvider(
-    create: (context) => VideoProvider()..loadWatchedVideos(),
-    child: const EcoApp()
-  ));
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => VideoProvider()..loadWatchedVideos(),
+      child: const EcoApp(),
+    ),
+  );
 }
 
 class EcoApp extends StatelessWidget {
@@ -62,7 +63,7 @@ class EcoApp extends StatelessWidget {
         routes: {
           '/home': (_) => const HomePage(),
           '/sign_in': (_) => const SignInPage(),
-          '/sign_up': (_) => const SignUpPage()
+          '/sign_up': (_) => const SignUpPage(),
         },
         home: const AppInitializer(),
       ),
@@ -70,7 +71,7 @@ class EcoApp extends StatelessWidget {
   }
 }
 
-// 
+//
 class AppInitializer extends StatefulWidget {
   const AppInitializer({super.key});
 
@@ -78,7 +79,8 @@ class AppInitializer extends StatefulWidget {
   State<AppInitializer> createState() => _AppInitializerState();
 }
 
-class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObserver {
+class _AppInitializerState extends State<AppInitializer>
+    with WidgetsBindingObserver {
   bool isLoading = true;
 
   @override
@@ -113,7 +115,6 @@ class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObse
     print(isRestricted);
 
     if (isRestricted && mounted) {
-
       // 플래그 초기화
       await prefs.setBool('isRestricted', false);
 
@@ -121,7 +122,8 @@ class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObse
 
       if (restrictionData != null && mounted) {
         final appName = restrictionData['appName'] ?? 'Unknown App';
-        final currentEmission = (restrictionData['currentEmission'] ?? 0.0).toDouble();
+        final currentEmission =
+            (restrictionData['currentEmission'] ?? 0.0).toDouble();
         final dailyLimit = (restrictionData['limit'] ?? 0.0).toDouble();
 
         if (currentEmission >= dailyLimit) {
@@ -129,11 +131,12 @@ class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObse
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AppRestrictionScreen(
-                appName: appName,
-                currentEmission: currentEmission,
-                limit: dailyLimit,
-              ),
+              builder:
+                  (context) => AppRestrictionScreen(
+                    appName: appName,
+                    currentEmission: currentEmission,
+                    limit: dailyLimit,
+                  ),
             ),
           );
         } else {
@@ -141,27 +144,44 @@ class _AppInitializerState extends State<AppInitializer> with WidgetsBindingObse
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => QuoteChallengeScreen(
-                appName: appName,
-                currentEmission: currentEmission,
-                limit: dailyLimit,
-              ),
+              builder:
+                  (context) => QuoteChallengeScreen(
+                    appName: appName,
+                    currentEmission: currentEmission,
+                    limit: dailyLimit,
+                  ),
             ),
           );
         }
         return;
       }
     }
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const HomePage()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const HomePage()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is Authenticated || isLoading) {
+          print('Authenticated state detected');
+          Navigator.pushReplacementNamed(context, '/home');
+        } else if (state is Unauthenticated) {
+          print('Unauthenticated state detected');
+          Navigator.pushReplacementNamed(context, '/sign_in');
+        } else if (state is AuthLoading) {
+          print('AuthLoading state');
+        }
+      },
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthLoading || isLoading) {
+            return CircularProgressIndicator();
+          }
+          return state is Authenticated ? HomePage() : SignInPage();
+        },
       ),
     );
   }
