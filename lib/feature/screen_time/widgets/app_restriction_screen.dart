@@ -76,20 +76,30 @@ class _AppRestrictionScreenState extends State<AppRestrictionScreen>
                   
                   // Title
                   Text(
-                    'Sorry!\n${widget.appName} is blocked\nfor today',
+                    'Sorry!',
                     style: const TextStyle(
-                      fontSize: 48,
+                      fontSize: 40,
                       fontWeight: FontWeight.w900,
                       color: Colors.black,
                       height: 1.1,
                     ),
                   ),
-                  
+                
+                  Text(
+                    '${widget.appName} is blocked\nfor today',
+                    style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                      height: 1.1,
+                    ),
+                  ),
+
                   const SizedBox(height: 32),
                   
                   // Subtitle with CO2 info
                   Text(
-                    'You have exceeded your daily carbon limit by ${(widget.currentEmission - widget.limit).toStringAsFixed(0)} g CO₂.\nTry again tomorrow when your limit resets.',
+                    'You have exceeded your daily carbon limit\non ${widget.appName}.\nTry again tomorrow when your limit resets.',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black87,
@@ -111,7 +121,7 @@ class _AppRestrictionScreenState extends State<AppRestrictionScreen>
                     child: Column(
                       children: [
                         const Text(
-                          'Today\'s Carbon Usage',
+                          'Carbon Usage on this app',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black87,
@@ -129,7 +139,7 @@ class _AppRestrictionScreenState extends State<AppRestrictionScreen>
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          'Limit: ${widget.limit.toStringAsFixed(1)} g CO₂',
+                          ' / ${widget.limit.toStringAsFixed(1)} g CO₂',
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey.shade600,

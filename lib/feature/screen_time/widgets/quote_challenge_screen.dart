@@ -1,7 +1,9 @@
 // quote_challenge_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:missionland_app/feature/screen_time/data/app_info_data.dart';
 import '../services/restriction_service.dart';
+import '../data/app_info_data.dart';
 import 'package:missionland_app/app/home_page.dart';
 
 class QuoteChallengeScreen extends StatefulWidget {
@@ -127,13 +129,12 @@ class _QuoteChallengeScreenState extends State<QuoteChallengeScreen>
                     ),
                   ),
                   
-                  const SizedBox(height: 32),
 
                   Text(
-                    '\nAre you trying to\nwatch ${widget.appName}?',
+                    'Are you trying to\nuse ${widget.appName}?',
                     style: const TextStyle(
                       fontSize: 40,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Colors.black,
                       height: 1.1,
                     ),
@@ -151,7 +152,7 @@ class _QuoteChallengeScreenState extends State<QuoteChallengeScreen>
                       ),
                       children: [
                         TextSpan(
-                          text: 'You can reduce ${(widget.limit - widget.currentEmission).toStringAsFixed(0)} g of CO₂\nby not using ${widget.appName}.\nCurrent usage: ',
+                          text: 'You can reduce ${(AppInfoData.appMetadata[widget.appName]?.emitRate ?? 150).toStringAsFixed(0)} g of CO₂ per hour\nby not using ${widget.appName}.\nCurrent usage: ',
                         ),
                         TextSpan(
                           text: '${widget.currentEmission.toStringAsFixed(1)}g / ${widget.limit.toStringAsFixed(1)}g',
