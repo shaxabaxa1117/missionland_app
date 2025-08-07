@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:missionland_app/feature/screen_time/widgets/app_restriction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,6 +91,7 @@ class _AppInitializerState extends State<AppInitializer>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _checkRestrictionStatus();
+    isLoading = false;
     print('init');
   }
 
