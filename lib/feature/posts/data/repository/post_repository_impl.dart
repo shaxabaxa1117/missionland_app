@@ -1,5 +1,3 @@
-
-
 import 'package:missionland_app/feature/posts/data/datasource/post_remote_data_source.dart';
 import 'package:missionland_app/feature/posts/data/model/post_model.dart';
 import 'package:missionland_app/feature/posts/domain/entity/post_entity.dart';
@@ -22,7 +20,7 @@ class PostRepositoryImpl implements PostRepository {
       likedBy: post.likedBy,
       thumbsUpBy: post.thumbsUpBy,
     );
-    await remoteDataSource.addPost(model, post.imageUrl);
+    await remoteDataSource.addPost(model);
   }
 
   @override

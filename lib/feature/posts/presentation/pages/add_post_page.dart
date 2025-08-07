@@ -3,10 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:missionland_app/feature/posts/data/datasource/image_upload_service.dart';
+import 'package:missionland_app/feature/posts/data/model/post_model.dart';
 import 'package:missionland_app/feature/posts/domain/entity/post_entity.dart';
 import 'package:missionland_app/feature/posts/presentation/bloc/post_bloc.dart';
 import 'package:missionland_app/feature/posts/presentation/bloc/post_event.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AddPostPage extends StatefulWidget {
   const AddPostPage({super.key});
@@ -20,6 +24,8 @@ class _AddPostPageState extends State<AddPostPage> {
   File? _imageFile;
   int _selectedVideoIndex = 1; // 기본값을 1로 설정
 
+  List<double> confidenceList = [];
+
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
@@ -32,11 +38,43 @@ class _AddPostPageState extends State<AddPostPage> {
     }
   }
 
-  void _submitPost() {
+  Future<void> fetchDetectionData(String imageUrl) async {
+    setState(() {
+      confidenceList = []; // 새 요청 시 초기화
+    });
+
+    try {
+      final response = await http.get(
+        Uri.parse('http://13.209.81.192:5000/run?imageUrl=$imageUrl'),
+      );
+
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        final detections = jsonData['detection'];
+
+        setState(() {
+          confidenceList =
+              detections
+                  .map<double>((item) => item['confidence'] as double)
+                  .toList();
+        });
+      } else {
+        throw Exception('Failed to load detection data');
+      }
+    } catch (e) {
+      print(e);
+    } finally {}
+  }
+
+  void _submitPost() async {
+    print("Submit start");
     if (_imageFile != null && _descriptionController.text.isNotEmpty) {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        final post = Post(
+        final post = PostModel(
           id: const Uuid().v4(),
           imageUrl: _imageFile!.path,
           description: _descriptionController.text,
@@ -46,16 +84,25 @@ class _AddPostPageState extends State<AddPostPage> {
           likedBy: [],
           thumbsUpBy: [],
         );
-        if (_selectedVideoIndex == 9) {
-          
-        }
+        if (_selectedVideoIndex == 9) {}
         _clearInputs();
+
+        final imageUploadService = ImageUploadService();
+        final imageUrl = await imageUploadService.uploadImage(
+          filePath: post.imageUrl,
+          userId: user.uid,
+        );
+
+        final postWithImage = post.copyWith(imageUrl: imageUrl);
+
+        await fetchDetectionData(imageUrl);
+
+        print(confidenceList);
+
         context.read<PostBloc>().add(AddPostEvent(post));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please log in to publish.'),
-          ),
+          const SnackBar(content: Text('Please log in to publish.')),
         );
       }
     } else {
@@ -192,7 +239,10 @@ class _AddPostPageState extends State<AddPostPage> {
                               color: isSelected ? Colors.green : Colors.white,
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: isSelected ? Colors.green : Colors.green.shade300,
+                                color:
+                                    isSelected
+                                        ? Colors.green
+                                        : Colors.green.shade300,
                                 width: 2,
                               ),
                             ),
@@ -202,7 +252,8 @@ class _AddPostPageState extends State<AddPostPage> {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: isSelected ? Colors.white : Colors.green,
+                                  color:
+                                      isSelected ? Colors.white : Colors.green,
                                 ),
                               ),
                             ),
