@@ -178,9 +178,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 20),
               _buildAchievementsSection(),
-              const SizedBox(height: 20),
-              // 테스트용 버튼들 (개발 중에만 사용)
-              _buildTestButtons(),
             ],
           ),
         ),

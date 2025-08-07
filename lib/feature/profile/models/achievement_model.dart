@@ -44,8 +44,8 @@ class Achievement {
       id: json['id'],
       title: json['title'],
       description: json['description'],
-      icon: Icons.star, // 아이콘은 별도 처리 필요
-      color: Colors.blue, // 색상도 별도 처리 필요
+      icon: Icons.star,
+      color: Colors.blue,
       pointReward: json['pointReward'],
       type: AchievementType.values.firstWhere(
         (e) => e.toString() == json['type'],
@@ -63,6 +63,7 @@ class Achievement {
 }
 
 enum AchievementType {
+  doMissions,
   daysTracked,
   carbonSaved,
   consecutiveDays,

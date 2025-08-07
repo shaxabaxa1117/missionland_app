@@ -116,7 +116,7 @@ class _QuoteChallengeScreenState extends State<QuoteChallengeScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   
                   // Title
                   Text(
@@ -139,8 +139,22 @@ class _QuoteChallengeScreenState extends State<QuoteChallengeScreen>
                       height: 1.1,
                     ),
                   ),
+
+                  const SizedBox(height: 20),
+
+                  Text(
+                    'Type this quote below to continue:',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black87,
+                      height: 1.4,
+                    ),
+                  ),
+
+                  // Quote to type
+                  _buildQuoteDisplay(),
                   
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
                   
                   // Subtitle with CO2 info and current status
                   RichText(
@@ -161,17 +175,11 @@ class _QuoteChallengeScreenState extends State<QuoteChallengeScreen>
                             color: widget.currentEmission > widget.limit * 0.8 ? Colors.orange : Colors.green,
                           ),
                         ),
-                        const TextSpan(
-                          text: '.\n\nTo continue, type the environmental quote below:',
-                        ),
                       ],
                     ),
                   ),
                   
                   const SizedBox(height: 60),
-                  
-                  // Quote to type
-                  _buildQuoteDisplay(),
                   
                   const Spacer(),
                   

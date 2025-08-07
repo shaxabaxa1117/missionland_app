@@ -8,58 +8,117 @@ class AchievementService {
   static const String _achievementsKey = 'achievements';
   static const String _userStatsKey = 'user_stats';
 
-  // Achievement 정의 - 여기서 쉽게 수정 가능
   static List<Achievement> getDefaultAchievements() {
     return [
       Achievement(
-        id: 'first_week',
-        title: 'First Week Complete',
-        description: 'Completed your first week of tracking!',
+        id: 'mission1',
+        title: 'My First Missionland',
+        description: 'Complete your first mission on missonland!',
+        icon: Icons.celebration,
+        color: Colors.yellow[600]!,
+        pointReward: 50,
+        type: AchievementType.doMissions,
+        targetValue: 1,
+      ),
+      Achievement(
+        id: 'mission2',
+        title: 'Don\'t Give Up!',
+        description: 'Complete your second mission on missonland!',
+        icon: Icons.celebration,
+        color: Colors.orange[600]!,
+        pointReward: 75,
+        type: AchievementType.doMissions,
+        targetValue: 2,
+      ),
+      Achievement(
+        id: 'mission7',
+        title: 'Bye, Histoweek!',
+        description: 'Complete whole missions on histoweek!',
+        icon: Icons.celebration,
+        color: Colors.purple[600]!,
+        pointReward: 200,
+        type: AchievementType.doMissions,
+        targetValue: 7,
+      ),
+      Achievement(
+        id: 'mission14',
+        title: 'Bye, Revoweek!',
+        description: 'Complete whole missions on Revoweek!',
+        icon: Icons.celebration,
+        color: Colors.purple[600]!,
+        pointReward: 200,
+        type: AchievementType.doMissions,
+        targetValue: 14,
+      ),
+      Achievement(
+        id: 'mission21',
+        title: 'Bye, Presweek!',
+        description: 'Complete whole missions on Presweek!',
+        icon: Icons.celebration,
+        color: Colors.purple[600]!,
+        pointReward: 200,
+        type: AchievementType.doMissions,
+        targetValue: 21,
+      ),
+      Achievement(
+        id: 'mission28',
+        title: 'Bye, Futuweek!',
+        description: 'Complete whole missions on Futuweek!',
+        icon: Icons.celebration,
+        color: Colors.purple[600]!,
+        pointReward: 200,
+        type: AchievementType.doMissions,
+        targetValue: 28,
+      ),
+      Achievement(
+        id: 'three_days',
+        title: 'Do You Know Jaksimsamil?',
+        description: 'Complete three days streak!',
         icon: Icons.celebration,
         color: Colors.purple[600]!,
         pointReward: 50,
         type: AchievementType.daysTracked,
+        targetValue: 3,
+      ),
+      Achievement(
+        id: 'first_week',
+        title: 'First Week Streak',
+        description: 'Complete seven days streak!',
+        icon: Icons.celebration,
+        color: Colors.purple[600]!,
+        pointReward: 100,
+        type: AchievementType.daysTracked,
         targetValue: 7,
       ),
       Achievement(
-        id: 'carbon_saver_100',
-        title: 'Carbon Saver',
-        description: 'Saved 100g of CO₂ emissions',
-        icon: Icons.eco,
-        color: Colors.green[600]!,
-        pointReward: 30,
-        type: AchievementType.carbonSaved,
+        id: 'first_month',
+        title: 'First Month Streak',
+        description: 'Complete seven days streak!',
+        icon: Icons.celebration,
+        color: Colors.purple[600]!,
+        pointReward: 200,
+        type: AchievementType.daysTracked,
+        targetValue: 30,
+      ),
+      Achievement(
+        id: 'hundred_days',
+        title: '100 Days Streak',
+        description: 'Complete hundred days streak!',
+        icon: Icons.celebration,
+        color: Colors.purple[600]!,
+        pointReward: 500,
+        type: AchievementType.daysTracked,
         targetValue: 100,
       ),
       Achievement(
         id: 'week_warrior',
         title: 'Week Warrior',
-        description: 'Stay under daily limits for a full week',
+        description: 'Stay under daily limits for a full week!',
         icon: Icons.shield,
         color: Colors.blue[600]!,
         pointReward: 75,
         type: AchievementType.consecutiveDays,
         targetValue: 7,
-      ),
-      Achievement(
-        id: 'carbon_saver_500',
-        title: 'Eco Champion',
-        description: 'Saved 500g of CO₂ emissions',
-        icon: Icons.park,
-        color: Colors.green[700]!,
-        pointReward: 100,
-        type: AchievementType.carbonSaved,
-        targetValue: 500,
-      ),
-      Achievement(
-        id: 'level_master',
-        title: 'Level Master',
-        description: 'Reached level 5!',
-        icon: Icons.star,
-        color: Colors.orange[600]!,
-        pointReward: 150,
-        type: AchievementType.levelReached,
-        targetValue: 5,
       ),
     ];
   }
@@ -130,6 +189,9 @@ class AchievementService {
       
       // 현재 진행도 업데이트
       switch (achievement.type) {
+        case AchievementType.doMissions:
+          achievement.currentProgress = stats['doMissions'] ?? 0;
+          break;
         case AchievementType.daysTracked:
           achievement.currentProgress = stats['daysTracked'] ?? 0;
           break;

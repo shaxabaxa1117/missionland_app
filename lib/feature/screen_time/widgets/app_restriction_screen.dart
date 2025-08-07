@@ -99,7 +99,7 @@ class _AppRestrictionScreenState extends State<AppRestrictionScreen>
                   
                   // Subtitle with CO2 info
                   Text(
-                    'You have exceeded your daily carbon limit\non ${widget.appName}.\nTry again tomorrow when your limit resets.',
+                    'You have exceeded your daily carbon limit\non ${widget.appName}.\nHelp us save earth, to not using apps!.',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black87,
