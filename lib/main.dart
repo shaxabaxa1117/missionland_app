@@ -116,10 +116,10 @@ class _AppInitializerState extends State<AppInitializer>
   Future<void> _checkRestrictionStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final isRestricted = prefs.getBool('isRestricted') ?? false;
+    print(isRestricted);
     if (!isRestricted) {
       return;
     }
-    print(isRestricted);
 
     if (isRestricted && mounted) {
       // 플래그 초기화
@@ -176,12 +176,12 @@ class _AppInitializerState extends State<AppInitializer>
           print("로그인 여부 판단중");
         } else if (state is Unauthenticated) {
           print('Unauthenticated state detected');
-          Navigator.pushReplacementNamed(context, '/sign_in');
+          Navigator.pushNamed(context, '/sign_in');
         } else if (isLoading) {
           print("로그인은 되었는데 유튜브 판독은 기다려야함.");
         } else if (state is Authenticated) {
           print('Authenticated state detected');
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushNamed(context, '/home');
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(
