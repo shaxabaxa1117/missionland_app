@@ -99,7 +99,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
         print(confidenceList);
 
-        context.read<PostBloc>().add(AddPostEvent(post));
+        context.read<PostBloc>().add(AddPostEvent(postWithImage));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Please log in to publish.')),
