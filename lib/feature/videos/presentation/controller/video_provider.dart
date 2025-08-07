@@ -1,5 +1,6 @@
 // providers/video_provider.dart
 import 'package:flutter/material.dart';
+import 'package:missionland_app/feature/screen_time/data/usage_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VideoProvider extends ChangeNotifier {
@@ -22,12 +23,9 @@ class VideoProvider extends ChangeNotifier {
     6: '''Mission: Reuse Relay 
 • Find and repurpose 3 old items (like jars, shirts, boxes). 
 •          Before/After photo challenge in the app!''',
-    7: '''Electricity 
-Mission: Energy Time Traveler 
-• Pretend you're a 1920s kid with no electricity.
-o Do chores by hand for 10 minutes (fold laundry, sweep, clean desk). 
-o Then do 15 “energy-free” squats. 
-• Bonus: Don’t use your phone for 30 minutes today!''',
+    7: '''Mission: Saving climate screen time 
+• Don’t exceed 300 g of carbon emissions in climate screen time today!
+• App system will automatically detect the emission in 12 AM!''',
     8: '''Task: Map 6 air polluted places in your neighborhood such as car traffic zones, factory zones, and 
 create small cards where you give ancient example to these sites. Go for search of these places on 
 your foot or bike. ''',

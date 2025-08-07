@@ -169,26 +169,8 @@ class EcoLevelWidget extends StatelessWidget {
       children: [
         Expanded(
           child: _buildStatItem(
-            'CO₂ Saved',
-            '${(currentPoints * 0.1).toStringAsFixed(1)}g',
-            Icons.cloud_outlined,
-            Colors.blue[600]!,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildStatItem(
-            'Days Active',
-            '${(currentPoints / 10).toInt()}',
-            Icons.calendar_today,
-            Colors.orange[600]!,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildStatItem(
-            'Streak',
-            '7 days',
+            'Climate Streak',
+            '1 day',
             Icons.local_fire_department,
             Colors.red[600]!,
           ),
@@ -231,11 +213,11 @@ class EcoLevelWidget extends StatelessWidget {
   }
 
   String _getLevelTitle(int level) {
-    if (level <= 5) return 'Eco Beginner';
-    if (level <= 10) return 'Green Explorer';
-    if (level <= 20) return 'Climate Warrior';
-    if (level <= 35) return 'Eco Champion';
-    if (level <= 50) return 'Planet Guardian';
+    if (level <= 2) return 'Eco Beginner';
+    if (level <= 5) return 'Green Explorer';
+    if (level <= 10) return 'Climate Warrior';
+    if (level <= 15) return 'Eco Champion';
+    if (level <= 20) return 'Planet Guardian';
     return 'Earth Hero';
   }
 }

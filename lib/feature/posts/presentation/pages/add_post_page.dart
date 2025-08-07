@@ -18,6 +18,7 @@ class AddPostPage extends StatefulWidget {
 class _AddPostPageState extends State<AddPostPage> {
   final TextEditingController _descriptionController = TextEditingController();
   File? _imageFile;
+  int _selectedVideoIndex = 1; // 기본값을 1로 설정
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -45,6 +46,9 @@ class _AddPostPageState extends State<AddPostPage> {
           likedBy: [],
           thumbsUpBy: [],
         );
+        if (_selectedVideoIndex == 9) {
+          
+        }
         _clearInputs();
         context.read<PostBloc>().add(AddPostEvent(post));
       } else {
@@ -67,6 +71,7 @@ class _AddPostPageState extends State<AddPostPage> {
     _descriptionController.clear();
     setState(() {
       _imageFile = null;
+      _selectedVideoIndex = 1; // 초기화 시 비디오 번호도 1로 리셋
     });
   }
 
@@ -89,7 +94,7 @@ class _AddPostPageState extends State<AddPostPage> {
           if (state is PostError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Ошибка: ${state.message}'),
+                content: Text('Error: ${state.message}'),
                 backgroundColor: Colors.red,
               ),
             );
@@ -144,6 +149,68 @@ class _AddPostPageState extends State<AddPostPage> {
                     borderSide: const BorderSide(color: Colors.green),
                     borderRadius: BorderRadius.circular(12),
                   ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              // video number selection
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.green.shade300),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Select Video Number',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.green,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: List.generate(10, (index) {
+                        final videoNumber = index + 1;
+                        final isSelected = _selectedVideoIndex == videoNumber;
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedVideoIndex = videoNumber;
+                            });
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: isSelected ? Colors.green : Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: isSelected ? Colors.green : Colors.green.shade300,
+                                width: 2,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '$videoNumber',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: isSelected ? Colors.white : Colors.green,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),

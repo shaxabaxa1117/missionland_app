@@ -112,6 +112,9 @@ class _AppInitializerState extends State<AppInitializer>
   Future<void> _checkRestrictionStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final isRestricted = prefs.getBool('isRestricted') ?? false;
+    if (!isRestricted) {
+      return;
+    }
     print(isRestricted);
 
     if (isRestricted && mounted) {

@@ -71,7 +71,7 @@ class VideoPage extends StatelessWidget {
                 } else if (state is VideoPlayerError) {
                   return AspectRatio(
                     aspectRatio: 2,
-                    child: Center(child: Text('Ошибка: ${state.message}')),
+                    child: Center(child: Text('Error: ${state.message}')),
                   );
                 } else {
                   return const AspectRatio(
@@ -85,7 +85,7 @@ class VideoPage extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          /// Текст на оставшейся части экрана
+          // Текст на оставшейся части экрана
           Expanded(
             flex: 1,
             child: Consumer<VideoProvider>(
