@@ -113,7 +113,7 @@ class _AppInitializerState extends State<AppInitializer>
     final prefs = await SharedPreferences.getInstance();
     final isRestricted = prefs.getBool('isRestricted') ?? false;
     if (!isRestricted) {
-      return;
+      return ;
     }
     print(isRestricted);
 
@@ -168,16 +168,14 @@ class _AppInitializerState extends State<AppInitializer>
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthLoading) {
-          print("로그인 여부 판단중");
+        if (state is Authenticated || isLoading) {
+          print('Authenticated state detected');
+          Navigator.pushReplacementNamed(context, '/home');
         } else if (state is Unauthenticated) {
           print('Unauthenticated state detected');
           Navigator.pushReplacementNamed(context, '/sign_in');
-        } else if (isLoading) {
-          print("로그인은 되었는데 유튜브 판독은 기다려야함.");
-        } else if (state is Authenticated) {
-          print('Authenticated state detected');
-          Navigator.pushReplacementNamed(context, '/home');
+        } else if (state is AuthLoading) {
+          print('AuthLoading state');
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(
